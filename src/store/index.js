@@ -11,11 +11,19 @@ export default new Vuex.Store({
     income: 0,
     title: 'Simple Budget',
     categories: [
-    ]
+    ],
+    rate: 10,
+    years: 1
   },
   mutations: {
     setIncome (state, {income}) {
       state.income = income
+    },
+    setRate (state, {rate}) {
+      state.rate = rate
+    },
+    setYears (state, {years}) {
+      state.years = years
     },
     addCategory (state, { title }) {
       state.categories.push({

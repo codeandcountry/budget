@@ -13,6 +13,32 @@
 
     <span>Remaining to Budget: <currency v-bind:number="remaining_to_budget"></currency></span><br>
     <span>Remaining to Spend: <currency v-bind:number="remaining_to_spend"></currency></span>
+
+    <br/><br/><br/>
+
+    <div v-show="!editing">
+      <span @click="editing = true">Years to invest: <span class="years">{{ years }}</span></span>
+    </div>
+    
+    <form v-show="editing" v-on:submit.prevent="doneEdit">
+      <input v-model="new_years"
+        @keyup.enter="doneEdit">
+      <button type="submit">Save</button>
+    </form>
+
+    <div v-show="!editing">
+      <span @click="editing = true">Interest rate: <span class="rate">{{ rate }}</span></span>
+    </div>
+    
+    <form v-show="editing" v-on:submit.prevent="doneEdit">
+      <input v-model="new_rate"
+        @keyup.enter="doneEdit">
+      <button type="submit">Save</button>
+    </form>
+
+    <span>Invested one time: <currency v-bind:number="invested_one_time"></currency></span><br>
+    <span>Invested every month: <currency v-bind:number="invested_monthly_b"></currency></span>
+
     <transition-group name="category" tag="ul">
       <Category v-for="category in categories" :category="category" v-bind:key="category"></Category>
     </transition-group>
@@ -37,7 +63,9 @@ export default {
     return {
       new_category_title: '',
       editing: false,
-      new_income: this.$store.state.income
+      new_income: this.$store.state.income,
+      new_rate: this.$store.state.rate,
+      new_years: this.$store.state.years
     }
   },
   computed: {
@@ -46,6 +74,12 @@ export default {
     },
     income () {
       return this.$store.state.income
+    },
+    rate () {
+      return this.$store.state.rate
+    },
+    years () {
+      return this.$store.state.years
     },
     categories () {
       return this.$store.state.categories
@@ -73,6 +107,35 @@ export default {
       })
 
       return remaining
+    },
+    invested_one_time () {
+      var remaining = this.remaining_to_budget
+      var rate = this.$store.state.rate / 100
+      var periods = this.$store.state.years * 12
+
+      var futureValue = remaining * Math.pow((1 + rate / 12), periods)
+
+      return futureValue
+    },
+    invested_monthly () {
+      var remaining = this.remaining_to_budget
+      var rate = this.$store.state.rate / 100
+      var periods = this.$store.state.years * 12
+
+      var futureValue = (1 + rate) * remaining * ((Math.pow((1 + rate), periods) - 1) / rate)
+
+      return futureValue
+    },
+    invested_monthly_b () {
+      var remaining = this.remaining_to_budget
+      var rate = this.$store.state.rate / 100
+      // var periods = this.$store.state.years * 12
+      var years = this.$store.state.years
+      var presentValue = 0
+
+      var futureValue = presentValue * Math.pow((1 + rate / 12), years * 12) + remaining * ((Math.pow((1 + rate / 12), years * 12) - 1) / (rate / 12)) * (1 + rate / 12)
+
+      return futureValue
     }
   },
   methods: {
@@ -86,6 +149,13 @@ export default {
     doneEdit () {
       const income = this.new_income
       this.$store.commit('setIncome', {income})
+
+      const years = this.new_years
+      this.$store.commit('setYears', {years})
+
+      const rate = this.new_rate
+      this.$store.commit('setRate', {rate})
+
       this.editing = false
     }
   },
