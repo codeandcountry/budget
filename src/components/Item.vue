@@ -4,6 +4,8 @@
       <label><input type="checkbox" v-model="spent"></label>
       <h4 @click="editing = true">{{ item.title }}</h4>
       <span @click="editing = true"><currency v-bind:number="item.price"></currency></span>
+      <span><currency v-bind:number="once"></currency></span>
+      <span><currency v-bind:number="monthly"></currency></span>
       <button @click="removeItem">X</button>
     </div>
     <form v-show="editing" v-on:submit.prevent="doneEdit">
@@ -11,6 +13,8 @@
         @keyup.enter="doneEdit">
       <input v-model="item.price"
         @keyup.enter="doneEdit">
+      <span><currency v-bind:number="once"></currency></span>
+      <span><currency v-bind:number="monthly"></currency></span>
       <button type="submit">Save</button>
     </form>
   </li>
@@ -26,6 +30,28 @@ export default {
     return {
       editing: false,
       spent: this.item.spent
+    }
+  },
+  computed: {
+    once () {
+      var price = this.item.price
+      var rate = this.$store.state.rate / 100
+      var periods = this.$store.state.years * 12
+
+      var futureValue = price * Math.pow((1 + rate / 12), periods)
+
+      return futureValue
+    },
+    monthly () {
+      var price = this.item.price
+      var rate = this.$store.state.rate / 100
+      // var periods = this.$store.state.years * 12
+      var years = this.$store.state.years
+      var presentValue = 0
+
+      var futureValue = presentValue * Math.pow((1 + rate / 12), years * 12) + price * ((Math.pow((1 + rate / 12), years * 12) - 1) / (rate / 12)) * (1 + rate / 12)
+
+      return futureValue
     }
   },
   methods: {

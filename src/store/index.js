@@ -9,7 +9,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     income: 0,
-    title: 'Simple Budget',
+    title: 'Budget Reset',
     categories: [
     ],
     rate: 10,

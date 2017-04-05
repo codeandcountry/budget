@@ -4,51 +4,46 @@
     <div v-show="!editing">
       <span @click="editing = true">Total Income: <currency v-bind:number="income"></currency></span>
     </div>
-    
-    <form v-show="editing" v-on:submit.prevent="doneEdit">
-      <input v-model="new_income"
-        @keyup.enter="doneEdit">
-      <button type="submit">Save</button>
-    </form>
-
-    <span>Remaining to Budget: <currency v-bind:number="remaining_to_budget"></currency></span><br>
-    <span>Remaining to Spend: <currency v-bind:number="remaining_to_spend"></currency></span>
-
-    <br/><br/><br/>
 
     <div v-show="!editing">
       <span @click="editing = true">Years to invest: <span class="years">{{ years }}</span></span>
     </div>
-    
-    <form v-show="editing" v-on:submit.prevent="doneEdit">
-      <input v-model="new_years"
-        @keyup.enter="doneEdit">
-      <button type="submit">Save</button>
-    </form>
 
     <div v-show="!editing">
       <span @click="editing = true">Interest rate: <span class="rate">{{ rate }}</span></span>
     </div>
-    
+
     <form v-show="editing" v-on:submit.prevent="doneEdit">
+      <input v-model="new_income"
+        @keyup.enter="doneEdit"><br>
+      <input v-model="new_years"
+        @keyup.enter="doneEdit"><br>
       <input v-model="new_rate"
         @keyup.enter="doneEdit">
       <button type="submit">Save</button>
     </form>
 
-    <span>Invested one time: <currency v-bind:number="invested_one_time"></currency></span><br>
-    <span>Invested every month: <currency v-bind:number="invested_monthly_b"></currency></span>
+    <section style="width:70%; float: left;">
+      <transition-group name="category" tag="ul">
+        <Category v-for="category in categories" :category="category" v-bind:key="category"></Category>
+      </transition-group>
+      <form v-on:submit.prevent="addCategory">
+        <button type="submit">Add Category</button>
+        <input class="new-category"
+            v-model="new_category_title"
+            autocomplete="off"
+            placeholder="title">
+      </form>
+    </section>
 
-    <transition-group name="category" tag="ul">
-      <Category v-for="category in categories" :category="category" v-bind:key="category"></Category>
-    </transition-group>
-    <form v-on:submit.prevent="addCategory">
-      <button type="submit">Add Category</button>
-      <input class="new-category"
-          v-model="new_category_title"
-          autocomplete="off"
-          placeholder="title">
-    </form>
+    <section style="width:30%; float: left; position: relative;">
+      <div class="investing" style="position: fixed; background-color: #fff3db; padding: 10px; border: 1px black solid;">
+        <span>Remaining to invest: <currency v-bind:number="remaining_to_budget"></currency></span><br><br>
+
+        <span>Invested one time: <currency v-bind:number="invested_one_time"></currency></span><br>
+        <span style="font-weight:bold">Invested every month: <currency v-bind:number="invested_monthly_b"></currency></span>
+      </div>
+    </section>
   </div>
 </template>
 
