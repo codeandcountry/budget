@@ -1,26 +1,48 @@
 <template>
-  <li class="category">
-    <h3 @click="editing = true" v-show="!editing">{{ category.title }}: <currency v-bind:number="items_total"></currency></h3>
-    <form v-show="editing" v-on:submit.prevent="doneEdit">
-      <input v-model="category.title"
-        @keyup.enter="doneEdit">
-      <button type="submit">Save</button>
-    </form>
-    <h5>Left to spend: <currency v-bind:number="remaining_to_spend"></currency></h5>
-      <transition-group name="item" tag="ul">
+  <b-card class="category" show-header show-footer>
+    <div slot="header">
+      <span @click="editing = true" v-show="!editing">{{ category.title }}: <currency v-bind:number="items_total"></currency></span>
+      <form v-show="editing" v-on:submit.prevent="doneEdit">
+        <div class="row">
+          <div class="col">
+            <b-form-input v-model="category.title"
+              @keyup.enter="doneEdit"></b-form-input>
+          </div>
+          <div class="col">
+            <b-button variant="primary" type="submit">Save</b-button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <b-list-group>
+      <transition-group name="item" tag="div">
         <Item v-for="item in category.items" :item="item" v-bind:key="item"></Item>
       </transition-group>
-    <form v-on:submit.prevent="addItem">
-      <button type="submit">Add Item</button>
-      <input v-model="item_title"
-        @keyup.enter="addItem"
-        placeholder="title">
-      <input v-model="item_price"
-        @keyup.enter="addItem"
-        placeholder="price">
-    </form>
-    <button @click="removeCategory">Remove Category</button>
-  </li>
+
+      <b-list-group-item>
+        <form v-on:submit.prevent="addItem">
+          <div class="row">
+            <div class="col">
+              <b-form-input v-model="item_title"
+              @keyup.enter="addItem"
+              placeholder="title"></b-form-input>
+            </div>
+            <div class="col">
+              <b-form-input v-model="item_price"
+              @keyup.enter="addItem"
+              placeholder="price"></b-form-input>
+            </div>
+            <div class="col">
+              <b-button variant="success" type="submit">Add Item</b-button>
+            </div>
+          </div>
+        </form>
+      </b-list-group-item>
+    </b-list-group>
+    <small slot="footer" class="text-muted">
+      <b-button variant="danger" @click="removeCategory">Remove Category</b-button>
+    </small>
+  </b-card>
 </template>
 
 <script>
@@ -93,54 +115,7 @@ export default {
 </script>
 
 <style scoped>
-.item-item {
-  display: inline-block;
-  margin-right: 10px;
-}
-.item-enter-active{
-  transition: all .5s;
-}
-.item-leave-active {
-  transition: all .3s;
-}
-.item-enter, .item-leave-to, .item-leave-active {
-  opacity: 0;
-  transform: translateX(30px);
-}
-
-
-h3, h5, form {
-  text-align: center;
-}
-
-h3 {
-  margin-bottom: 0;
-}
-
-h5 {
-  margin-top: 0;
-}
-
-.category {
-  position: relative;
-  border: 1px solid black;
-  padding: 1em;
-  margin: 2rem 1rem;
-  background-color: #fff3db;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-a {
-  color: #42b983;
-}
-
-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
+  .category{
+    margin-bottom: 2em;
+  }
 </style>

@@ -5,15 +5,23 @@
 </template>
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
-<script>
-import Budget from './components/Budget'
 
-export default {
-  name: 'app',
-  components: {
-    Budget
+<script>
+  import Vue from 'vue'
+  import BootstrapVue from 'bootstrap-vue'
+  import Budget from './components/Budget'
+
+  Vue.use(BootstrapVue)
+
+  import 'bootstrap/dist/css/bootstrap.css'
+  import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+  export default {
+    name: 'app',
+    components: {
+      Budget
+    }
   }
-}
 </script>
 
 <style>

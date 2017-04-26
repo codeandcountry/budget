@@ -1,23 +1,47 @@
 <template>
-  <li class="item">
+  <b-list-group-item class="item">
     <div v-show="!editing">
-      <label><input type="checkbox" v-model="spent"></label>
-      <h4 @click="editing = true">{{ item.title }}</h4>
-      <span @click="editing = true"><currency v-bind:number="item.price"></currency></span>
-      <span><currency v-bind:number="once"></currency></span>
-      <span><currency v-bind:number="monthly"></currency></span>
-      <button @click="removeItem">X</button>
+      <!--<label><b-form-checkbox v-model="spent"></b-form-checkbox></label>-->
+      <div class="row">
+        <div class="col">
+          <span @click="editing = true">{{ item.title }}</span>
+        </div>
+        <div class="col">
+          <span @click="editing = true"><currency v-bind:number="item.price"></currency></span>
+        </div>
+        <div class="col">
+          <span><currency v-bind:number="once"></currency></span>
+        </div>
+        <div class="col">
+          <span><currency v-bind:number="monthly"></currency></span>
+        </div>
+        <div class="col">
+          <b-button variant="danger" @click="removeItem">X</b-button>
+        </div>
+      </div>
     </div>
     <form v-show="editing" v-on:submit.prevent="doneEdit">
-      <input v-model="item.title"
-        @keyup.enter="doneEdit">
-      <input v-model="item.price"
-        @keyup.enter="doneEdit">
-      <span><currency v-bind:number="once"></currency></span>
-      <span><currency v-bind:number="monthly"></currency></span>
-      <button type="submit">Save</button>
+      <div class="row">
+        <div class="col">
+          <b-form-input v-model="item.title"
+          @keyup.enter="doneEdit"></b-form-input>
+        </div>
+        <div class="col">
+          <b-form-input v-model="item.price"
+          @keyup.enter="doneEdit"></b-form-input>
+        </div>
+        <div class="col">
+          <span><currency v-bind:number="once"></currency></span>
+        </div>
+        <div class="col">
+          <span><currency v-bind:number="monthly"></currency></span>
+        </div>
+        <div class="col">
+          <b-button variant="primary" type="submit">Save</b-button>
+        </div>
+      </div>
     </form>
-  </li>
+  </b-list-group-item>
 </template>
 
 <script>
@@ -90,14 +114,14 @@ h4 {
   padding: 0;
 }
 
-li.item {
+.item {
   display: block;
-  margin-bottom: 10px;
+  //margin-bottom: 10px;
   padding: 1em;
-  border: 1px solid black;
+  //border: 1px solid black;
 }
 
-.item div {
+/*.item div {
   display: flex;
   justify-content: space-between;
 }
@@ -123,5 +147,5 @@ li.item {
 
 a {
   color: #42b983;
-}
+} */
 </style>
