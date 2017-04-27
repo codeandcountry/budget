@@ -2,27 +2,43 @@
   <div class="budget row">
     <div class="col-9">
       <h1>{{ title }}</h1>
-      <div v-show="!editing">
-        <span @click="editing = true">Total Income: <currency v-bind:number="income"></currency></span>
-      </div>
-
-      <div v-show="!editing">
-        <span @click="editing = true">Years to invest: <span class="years">{{ years }}</span></span>
-      </div>
-
-      <div v-show="!editing">
-        <span @click="editing = true">Interest rate: <span class="rate">{{ rate }}</span></span>
-      </div>
-
-      <form v-show="editing" v-on:submit.prevent="doneEdit">
-        <b-form-input v-model="new_income"
-          @keyup.enter="doneEdit"></b-form-input><br>
-        <b-form-input v-model="new_years"
-          @keyup.enter="doneEdit"></b-form-input><br>
-        <b-form-input v-model="new_rate"
-          @keyup.enter="doneEdit"></b-form-input>
-        <b-button variant='primary' type="submit">Save</b-button>
-      </form>
+      <b-card header="Income and settings">
+        <form v-on:submit.prevent="doneEdit">
+          <div class="row">
+            <div class="col-3">
+              Total Income:
+            </div>
+            <div class="col-3">
+              <b-input-group left="$">
+                <b-form-input v-model="new_income"
+                  @keyup="doneEdit"></b-form-input>
+              </b-input-group>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              Years to invest:
+            </div>
+            <div class="col-3">
+              <b-input-group right="years">
+                <b-form-input v-model="new_years"
+                  @keyup="doneEdit"></b-form-input>
+              </b-input-group>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              Interest rate: 
+            </div>
+            <div class="col-3">
+              <b-input-group right="%">
+                <b-form-input v-model="new_rate"
+              @k  eyup="doneEdit"></b-form-input>
+          </b-input-group>
+            </div>
+          </div>
+        </form>
+      </b-card>
 
       <transition-group name="category" tag="ul">
         <Category v-for="category in categories" :category="category" v-bind:key="category"></Category>
@@ -37,7 +53,7 @@
                   placeholder="title"></b-form-input>
             </div>
             <div class="col">
-              <b-button variant="success" type="submit">Add Category</b-button>
+              <b-button variant="success" type="submit"><i class="fa fa-minus-circle" aria-hidden="true"></i>     Add Category</b-button>
             </div>
           </div>
         </form>

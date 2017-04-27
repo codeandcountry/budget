@@ -10,13 +10,16 @@
           <span @click="editing = true"><currency v-bind:number="item.price"></currency></span>
         </div>
         <div class="col">
+          <toggle-button @change="toggleMonthly" :value="true" :width="75" :labels="{checked: 'monthly', unchecked: 'once'}"/>
+        </div>
+        <div v-show="!isMonthly" class="col">
           <span><currency v-bind:number="once"></currency></span>
         </div>
-        <div class="col">
+        <div v-show="isMonthly" class="col">
           <span><currency v-bind:number="monthly"></currency></span>
         </div>
         <div class="col">
-          <b-button variant="danger" @click="removeItem">X</b-button>
+          <i class="fa fa-times-circle remove" aria-hidden="true" @click="removeItem"></i>
         </div>
       </div>
     </div>
@@ -53,7 +56,8 @@ export default {
   data () {
     return {
       editing: false,
-      spent: this.item.spent
+      spent: this.item.spent,
+      isMonthly: true
     }
   },
   computed: {
@@ -92,6 +96,9 @@ export default {
     removeItem () {
       const item = this.item
       this.$store.commit('removeItem', {item})
+    },
+    toggleMonthly (e) {
+      this.isMonthly = e.value
     }
   },
   watch: {
@@ -121,31 +128,7 @@ h4 {
   //border: 1px solid black;
 }
 
-/*.item div {
-  display: flex;
-  justify-content: space-between;
+i.remove:hover{
+  color: #d9534f;
 }
-
-.item div label,
-.item div button {
-  flex: 0 1 auto;
-}
-
-.item div h4,
-.item div span {
-  flex: 1 1 auto;
-}
-
-.item div h4 {
-  margin-left: 2rem;
-}
-
-.item div span {
-  text-align: right;
-  padding-right: 3rem;
-}
-
-a {
-  color: #42b983;
-} */
 </style>

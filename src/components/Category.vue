@@ -25,22 +25,24 @@
             <div class="col">
               <b-form-input v-model="item_title"
               @keyup.enter="addItem"
-              placeholder="title"></b-form-input>
+              placeholder="Item name"></b-form-input>
             </div>
             <div class="col">
-              <b-form-input v-model="item_price"
-              @keyup.enter="addItem"
-              placeholder="price"></b-form-input>
+              <b-input-group left="$">
+                <b-form-input v-model="item_price"
+                @keyup.enter="addItem"
+                placeholder="amount"></b-form-input>
+              </b-input-group>
             </div>
             <div class="col">
-              <b-button variant="success" type="submit">Add Item</b-button>
+              <b-button variant="success" type="submit"><i class="fa fa-plus-circle" aria-hidden="true"></i>     Add Item</b-button>
             </div>
           </div>
         </form>
       </b-list-group-item>
     </b-list-group>
     <small slot="footer" class="text-muted">
-      <b-button variant="danger" @click="removeCategory">Remove Category</b-button>
+      <b-button variant="danger" @click="removeCategory"><i class="fa fa-minus-circle" aria-hidden="true"></i>     Remove Category</b-button>
     </small>
   </b-card>
 </template>
