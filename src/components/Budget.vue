@@ -1,71 +1,75 @@
 <template>
-  <div class="budget row">
-    <div class="col-9">
-      <h1>{{ title }}</h1>
-      <b-card header="Income and settings">
-        <form v-on:submit.prevent="doneEdit">
-          <div class="row">
-            <div class="col-3">
-              Total Income:
-            </div>
-            <div class="col-3">
-              <b-input-group left="$">
-                <b-form-input v-model="new_income"
-                  @keyup="doneEdit"></b-form-input>
-              </b-input-group>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-3">
-              Years to invest:
-            </div>
-            <div class="col-3">
-              <b-input-group right="years">
-                <b-form-input v-model="new_years"
-                  @keyup="doneEdit"></b-form-input>
-              </b-input-group>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-3">
-              Interest rate: 
-            </div>
-            <div class="col-3">
-              <b-input-group right="%">
-                <b-form-input v-model="new_rate"
-              @k  eyup="doneEdit"></b-form-input>
-          </b-input-group>
-            </div>
-          </div>
-        </form>
-      </b-card>
-
-      <transition-group name="category" tag="ul">
-        <Category v-for="category in categories" :category="category" v-bind:key="category"></Category>
-      </transition-group>
-      <b-card header="Add Category">
-        <form v-on:submit.prevent="addCategory">
-          <div class="row">
-            <div class="col">
-              <b-form-input class="new-category"
-                  v-model="new_category_title"
-                  autocomplete="off"
-                  placeholder="title"></b-form-input>
-            </div>
-            <div class="col">
-              <b-button variant="success" type="submit"><i class="fa fa-minus-circle" aria-hidden="true"></i>     Add Category</b-button>
-            </div>
-          </div>
-        </form>
-      </b-card>
+  <div class="budget">
+    <div class="row">
+      <h1>Budget Reset</h1>
     </div>
-    <div class="col">
-      <b-card header="Opportunity Cost" class="investing" style="position: fixed;">
-        <span>Remaining to invest: <currency v-bind:number="remaining_to_budget"></currency></span><br><br>
+    <div class="row">
+      <div class="col-9">
+        <transition-group name="category" tag="ul">
+          <Category v-for="category in categories" :category="category" v-bind:key="category"></Category>
+        </transition-group>
+        <b-card header="Add Category">
+          <form v-on:submit.prevent="addCategory">
+            <div class="row">
+              <div class="col">
+                <b-form-input class="new-category"
+                    v-model="new_category_title"
+                    autocomplete="off"
+                    placeholder="title"></b-form-input>
+              </div>
+              <div class="col">
+                <b-button variant="success" type="submit"><i class="fa fa-minus-circle" aria-hidden="true"></i>     Add Category</b-button>
+              </div>
+            </div>
+          </form>
+        </b-card>
+      </div>
+      <div class="col">
+        <b-card header="Income and settings">
+          <form v-on:submit.prevent="doneEdit">
+            <div class="row">
+              <div class="col">
+                Total Income:
+              </div>
+              <div class="col">
+                <b-input-group left="$">
+                  <b-form-input v-model="new_income"
+                    @keyup="doneEdit"></b-form-input>
+                </b-input-group>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                Years to invest:
+              </div>
+              <div class="col">
+                <b-input-group right="years">
+                  <b-form-input v-model="new_years"
+                    @keyup="doneEdit"></b-form-input>
+                </b-input-group>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                Interest rate: 
+              </div>
+              <div class="col">
+                <b-input-group right="%">
+                  <b-form-input v-model="new_rate"
+                @keyup="doneEdit"></b-form-input>
+            </b-input-group>
+              </div>
+            </div>
+          </form>
+        </b-card>
+        <b-card header="Opportunity Cost" class="investing">
+          <span>Remaining to budget: <b><currency v-bind:number="remaining_to_budget"></currency></b></span><br><br>
 
-        <span>Invested one time: <currency v-bind:number="invested_one_time"></currency></span><br>
-        <span style="font-weight:bold">Invested every month: <currency v-bind:number="invested_monthly_b"></currency></span>
-      </b-card>
+          <span>If you invested your remaining to budget this month it could be worth <b><currency v-bind:number="invested_one_time"></currency> in {{ years }} years</b></span><br><br>
+
+          <span>If your budgest looked like this every month and you invested your remaining to budget your nest egg could be <b><currency v-bind:number="invested_monthly_b"></currency> in {{ years }} years</b></span>
+        </b-card>
+      </div>
     </div>
   </div>
 </template>
@@ -202,6 +206,9 @@ export default {
 .category-list-enter, .category-list-leave-to, .category-list-leave-active {
   opacity: 0;
   transform: translateX(30px);
+}
+.card{
+  margin-bottom: 2em; 
 }
 h1, h2 {
   font-weight: normal;
