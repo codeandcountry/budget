@@ -75,6 +75,55 @@
             </b-card>
           </div>
         </div>
+
+        <div class="row">
+          <div class="col-sm-12 col-md col-lg-12">
+            <b-card header="Debt">
+              <form v-on:submit.prevent="doneEdit">
+                <div class="row">
+                  <div class="col">
+                    Total Income:
+                  </div>
+                  <div class="col">
+                    <b-input-group left="$">
+                      <b-form-input v-model="new_income"
+                        @keyup="doneEdit"></b-form-input>
+                    </b-input-group>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    Total Debt:
+                  </div>
+                  <div class="col">
+                    <b-input-group left="$">
+                      <b-form-input v-model="new_debt"
+                        @keyup="doneEditDebt"></b-form-input>
+                    </b-input-group>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    Interest rate: 
+                  </div>
+                  <div class="col">
+                    <b-input-group right="%">
+                      <b-form-input v-model="new_debt_rate"
+                    @keyup="doneEditDebt"></b-form-input>
+                </b-input-group>
+                  </div>
+                </div>
+              </form>
+            </b-card>
+          </div>
+          <div class="col-sm-12 col-md col-lg-12">
+            <b-card header="Payoff Cost" class="investing">
+              <span>Remaining to budget: <b><currency v-bind:number="remaining_to_budget"></currency></b></span><br><br>
+
+              <span>If your budgest looked like this every month and you paid down your debt you be debt free in<b> {{ months_to_payoff }} months</b></span>
+            </b-card>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -93,7 +142,9 @@ export default {
       editing: false,
       new_income: this.$store.state.income,
       new_rate: this.$store.state.rate,
-      new_years: this.$store.state.years
+      new_years: this.$store.state.years,
+      new_debt: this.$store.state.debt,
+      new_debt_rate: this.$store.state.debtRate
     }
   },
   computed: {
@@ -111,6 +162,12 @@ export default {
     },
     categories () {
       return this.$store.state.categories
+    },
+    debt () {
+      return this.$store.state.debt
+    },
+    debtRate () {
+      return this.$store.state.debtRate
     },
     remaining_to_budget () {
       var remaining = 0
@@ -164,6 +221,20 @@ export default {
       var futureValue = presentValue * Math.pow((1 + rate / 12), years * 12) + remaining * ((Math.pow((1 + rate / 12), years * 12) - 1) / (rate / 12)) * (1 + rate / 12)
 
       return futureValue
+    },
+    months_to_payoff () {
+      // N = −log(1−iA/P) / log(1+i)
+      var debtRate = (this.debtRate / 12) / 100
+      var payment = this.remaining_to_budget
+      var debt = this.debt
+
+      console.log(debtRate)
+      console.log(payment)
+      console.log(debt)
+
+      var months = -Math.log(1 - debtRate * debt / payment) / Math.log(1 + debtRate)
+
+      return Math.ceil(months)
     }
   },
   methods: {
@@ -185,7 +256,17 @@ export default {
       this.$store.commit('setRate', {rate})
 
       this.editing = false
+    },
+    doneEditDebt () {
+      const debt = this.new_debt
+      this.$store.commit('setDebt', {debt})
+
+      const debtRate = this.new_debt_rate
+      this.$store.commit('setDebtRate', {debtRate})
+
+      console.log('edit debt')
     }
+
   },
   components: {
     Category,
