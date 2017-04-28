@@ -4,7 +4,7 @@
       <h1>Budget Reset</h1>
     </div>
     <div class="row">
-      <div class="col-lg-9">
+      <div class="col-sm-12 col-lg-8">
         <transition-group name="category" tag="ul">
           <Category v-for="category in categories" :category="category" v-bind:key="category"></Category>
         </transition-group>
@@ -24,52 +24,56 @@
           </form>
         </b-card>
       </div>
-      <div class="col-lg">
+      <div class="col-sm-12 col-lg">
         <div class="row">
-          <b-card header="Income and settings" class="col-sm">
-            <form v-on:submit.prevent="doneEdit">
-              <div class="row">
-                <div class="col">
-                  Total Income:
+          <div class="col-sm-12 col-md col-lg-12">
+            <b-card header="Income and settings">
+              <form v-on:submit.prevent="doneEdit">
+                <div class="row">
+                  <div class="col">
+                    Total Income:
+                  </div>
+                  <div class="col">
+                    <b-input-group left="$">
+                      <b-form-input v-model="new_income"
+                        @keyup="doneEdit"></b-form-input>
+                    </b-input-group>
+                  </div>
                 </div>
-                <div class="col">
-                  <b-input-group left="$">
-                    <b-form-input v-model="new_income"
-                      @keyup="doneEdit"></b-form-input>
-                  </b-input-group>
+                <div class="row">
+                  <div class="col">
+                    Years to invest:
+                  </div>
+                  <div class="col">
+                    <b-input-group right="years">
+                      <b-form-input v-model="new_years"
+                        @keyup="doneEdit"></b-form-input>
+                    </b-input-group>
+                  </div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  Years to invest:
+                <div class="row">
+                  <div class="col">
+                    Interest rate: 
+                  </div>
+                  <div class="col">
+                    <b-input-group right="%">
+                      <b-form-input v-model="new_rate"
+                    @keyup="doneEdit"></b-form-input>
+                </b-input-group>
+                  </div>
                 </div>
-                <div class="col">
-                  <b-input-group right="years">
-                    <b-form-input v-model="new_years"
-                      @keyup="doneEdit"></b-form-input>
-                  </b-input-group>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  Interest rate: 
-                </div>
-                <div class="col">
-                  <b-input-group right="%">
-                    <b-form-input v-model="new_rate"
-                  @keyup="doneEdit"></b-form-input>
-              </b-input-group>
-                </div>
-              </div>
-            </form>
-          </b-card>
-          <b-card header="Opportunity Cost" class="investing col-sm">
-            <span>Remaining to budget: <b><currency v-bind:number="remaining_to_budget"></currency></b></span><br><br>
+              </form>
+            </b-card>
+          </div>
+          <div class="col-sm-12 col-md col-lg-12">
+            <b-card header="Opportunity Cost" class="investing">
+              <span>Remaining to budget: <b><currency v-bind:number="remaining_to_budget"></currency></b></span><br><br>
 
-            <span>If you invested your remaining to budget this month it could be worth <b><currency v-bind:number="invested_one_time"></currency> in {{ years }} years</b></span><br><br>
+              <span>If you invested your remaining to budget this month it could be worth <b><currency v-bind:number="invested_one_time"></currency> in {{ years }} years</b></span><br><br>
 
-            <span>If your budgest looked like this every month and you invested your remaining to budget your nest egg could be <b><currency v-bind:number="invested_monthly_b"></currency> in {{ years }} years</b></span>
-          </b-card>
+              <span>If your budgest looked like this every month and you invested your remaining to budget your nest egg could be <b><currency v-bind:number="invested_monthly_b"></currency> in {{ years }} years</b></span>
+            </b-card>
+          </div>
         </div>
       </div>
     </div>

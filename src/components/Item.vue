@@ -3,22 +3,22 @@
     <div v-show="!editing">
       <!--<label><b-form-checkbox v-model="spent"></b-form-checkbox></label>-->
       <div class="row">
-        <div class="col">
+        <div class="col-6 col-sm">
           <span @click="editing = true">{{ item.title }}</span>
         </div>
-        <div class="col">
+        <div class="col-6 col-sm">
           <span @click="editing = true"><currency v-bind:number="item.price"></currency></span>
         </div>
-        <div class="col">
+        <div class="col-6 col-sm">
           <toggle-button @change="toggleMonthly" :value="true" :width="75" :labels="{checked: 'monthly', unchecked: 'once'}"/>
         </div>
-        <div v-show="!isMonthly" class="col">
+        <div v-show="!isMonthly" class="col-6 col-sm">
           <span><currency v-bind:number="once"></currency></span>
         </div>
-        <div v-show="isMonthly" class="col">
+        <div v-show="isMonthly" class="col-6 col-sm">
           <span><currency v-bind:number="monthly"></currency></span>
         </div>
-        <div class="col">
+        <div class="col-1">
           <i class="fa fa-times-circle remove" aria-hidden="true" @click="removeItem"></i>
         </div>
       </div>
