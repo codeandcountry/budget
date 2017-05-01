@@ -18,7 +18,7 @@
                     placeholder="title"></b-form-input>
               </div>
               <div class="col">
-                <b-button variant="success" type="submit"><i class="fa fa-minus-circle" aria-hidden="true"></i>     Add Category</b-button>
+                <b-button variant="success" type="submit"><i class="fa fa-plus-circle" aria-hidden="true"></i>     Add Category</b-button>
               </div>
             </div>
           </form>
@@ -31,7 +31,7 @@
               <form v-on:submit.prevent="doneEdit">
                 <div class="row">
                   <div class="col">
-                    Total Income:
+                    Monthly Income:
                   </div>
                   <div class="col">
                     <b-input-group left="$">
