@@ -178,6 +178,9 @@ export default {
         })
       })
 
+      // cache
+      this.$store.commit('setRemaining', this.$store.state.income - remaining)
+
       return this.$store.state.income - remaining
     },
     remaining_to_spend () {

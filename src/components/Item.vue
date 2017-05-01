@@ -18,6 +18,9 @@
         <div v-show="isMonthly" class="col-6 col-sm">
           <span><currency v-bind:number="monthly"></currency></span>
         </div>
+        <div class="col-6 col-sm">
+          <span>{{ payoffCost }}</span>
+        </div>
         <div class="col-1">
           <i class="fa fa-times-circle remove" aria-hidden="true" @click="removeItem"></i>
         </div>
@@ -49,6 +52,7 @@
 
 <script>
 import Currency from './Currency'
+var _ = require('lodash/core')
 
 export default {
   name: 'item',
@@ -80,6 +84,36 @@ export default {
       var futureValue = presentValue * Math.pow((1 + rate / 12), years * 12) + price * ((Math.pow((1 + rate / 12), years * 12) - 1) / (rate / 12)) * (1 + rate / 12)
 
       return futureValue
+    },
+    payoffCost () {
+      // N = −log(1−iA/P) / log(1+i)
+      var debtRate = (this.$store.state.debtRate / 12) / 100
+      // var payment = this.$store.state.remaining
+      var debt = this.$store.state.debt
+
+      // var potentialPayment = payment + this.item.price
+
+      var budgeted = 0
+
+      _.each(this.$store.state.categories, function (cat) {
+        _.each(cat.items, function (item) {
+          budgeted += 1 * item.price
+        })
+      })
+
+      var payment = parseFloat(this.$store.state.income) - budgeted
+      var potentialPayment = payment + parseFloat(this.item.price)
+
+      console.log('rate: ' + debtRate)
+      console.log('payment: ' + payment)
+      console.log('payment 2: ' + potentialPayment)
+      console.log('debt: ' + debt)
+      console.log(this)
+
+      var months = -Math.log(1 - debtRate * debt / payment) / Math.log(1 + debtRate)
+      var potentialMonths = -Math.log(1 - debtRate * debt / potentialPayment) / Math.log(1 + debtRate)
+
+      return Math.ceil((months - potentialMonths) * 30)
     }
   },
   methods: {

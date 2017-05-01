@@ -15,7 +15,8 @@ export default new Vuex.Store({
     rate: 10,
     years: 1,
     debt: 0,
-    debtRate: 0
+    debtRate: 0,
+    remaining: 0
   },
   mutations: {
     setIncome (state, {income}) {
@@ -32,6 +33,9 @@ export default new Vuex.Store({
     },
     setDebtRate (state, {debtRate}) {
       state.debtRate = debtRate
+    },
+    setRemaining (state, {remaining}) {
+      state.remaining = remaining
     },
     addCategory (state, { title }) {
       state.categories.push({
