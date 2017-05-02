@@ -16,7 +16,8 @@ export default new Vuex.Store({
     years: 1,
     debt: 0,
     debtRate: 0,
-    remaining: 0
+    remaining: 0,
+    goal: 0
   },
   mutations: {
     setIncome (state, {income}) {
@@ -36,6 +37,9 @@ export default new Vuex.Store({
     },
     setRemaining (state, {remaining}) {
       state.remaining = remaining
+    },
+    setGoal (state, {goal}) {
+      state.goal = goal
     },
     addCategory (state, { title }) {
       state.categories.push({

@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-sm-12 col-lg-8">
         <transition-group name="category" tag="ul">
-          <Category v-for="category in categories" :category="category" v-bind:key="category"></Category>
+          <Category v-for="category in categories" :category="category" :goal="new_goal" v-bind:key="category"></Category>
         </transition-group>
         <b-card header="Add Category">
           <form v-on:submit.prevent="addCategory">
@@ -27,9 +27,21 @@
       <div class="col-sm-12 col-lg">
         <div class="row">
           <div class="col-sm-12 col-md col-lg-12">
-            <b-card header="Income and settings">
-              <form v-on:submit.prevent="doneEdit">
-                <div class="row">
+            <b-card header="Goal and Income">
+              <div class="row">
+                <div class="col">
+                  Goal:
+                </div>
+                <div class="col">
+                  <form v-on:submit.prevent="doneEdit">
+                    <b-form-select v-model="new_goal"
+                        :options="goal_options"
+                        class="mb-3" 
+                        ></b-form-select>
+                  </form>
+                </div>
+              </div>
+              <div class="row">
                   <div class="col">
                     Monthly Income:
                   </div>
@@ -40,6 +52,11 @@
                     </b-input-group>
                   </div>
                 </div>
+            </b-card>
+          </div>
+          <div class="col-sm-12 col-md col-lg-12" v-show="new_goal === 'RETIREMENT'">
+            <b-card header="Income and settings">
+              <form v-on:submit.prevent="doneEdit">
                 <div class="row">
                   <div class="col">
                     Years to invest:
@@ -65,7 +82,7 @@
               </form>
             </b-card>
           </div>
-          <div class="col-sm-12 col-md col-lg-12">
+          <div class="col-sm-12 col-md col-lg-12" v-show="new_goal === 'RETIREMENT'">
             <b-card header="Opportunity Cost" class="investing">
               <span>Remaining to budget: <b><currency v-bind:number="remaining_to_budget"></currency></b></span><br><br>
 
@@ -77,20 +94,9 @@
         </div>
 
         <div class="row">
-          <div class="col-sm-12 col-md col-lg-12">
+          <div class="col-sm-12 col-md col-lg-12" v-show="new_goal === 'DEBT'">
             <b-card header="Debt">
               <form v-on:submit.prevent="doneEdit">
-                <div class="row">
-                  <div class="col">
-                    Total Income:
-                  </div>
-                  <div class="col">
-                    <b-input-group left="$">
-                      <b-form-input v-model="new_income"
-                        @keyup="doneEdit"></b-form-input>
-                    </b-input-group>
-                  </div>
-                </div>
                 <div class="row">
                   <div class="col">
                     Total Debt:
@@ -116,7 +122,7 @@
               </form>
             </b-card>
           </div>
-          <div class="col-sm-12 col-md col-lg-12">
+          <div class="col-sm-12 col-md col-lg-12" v-show="new_goal === 'DEBT'">
             <b-card header="Payoff Cost" class="investing">
               <span>Remaining to budget: <b><currency v-bind:number="remaining_to_budget"></currency></b></span><br><br>
 
@@ -144,7 +150,17 @@ export default {
       new_rate: this.$store.state.rate,
       new_years: this.$store.state.years,
       new_debt: this.$store.state.debt,
-      new_debt_rate: this.$store.state.debtRate
+      new_debt_rate: this.$store.state.debtRate,
+      new_goal: this.$store.state.goal,
+      goal_options: [
+        {
+          text: 'Retirement',
+          value: 'RETIREMENT'
+        },
+        {
+          text: 'Debt Payoff',
+          value: 'DEBT'
+        }]
     }
   },
   computed: {
@@ -269,7 +285,12 @@ export default {
 
       console.log('edit debt')
     }
-
+  },
+  watch: {
+    new_goal: function (val, oldVal) {
+      const goal = this.new_goal
+      this.$store.commit('setGoal', {goal})
+    }
   },
   components: {
     Category,

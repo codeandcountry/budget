@@ -9,17 +9,17 @@
         <div class="col-6 col-sm">
           <span @click="editing = true"><currency v-bind:number="item.price"></currency></span>
         </div>
-        <div class="col-6 col-sm">
+        <div class="col-6 col-sm" v-show="goal === 'RETIREMENT'">
           <toggle-button @change="toggleMonthly" :value="true" :width="75" :labels="{checked: 'monthly', unchecked: 'once'}"/>
         </div>
-        <div v-show="!isMonthly" class="col-6 col-sm">
+        <div v-show="!isMonthly && goal === 'RETIREMENT'" class="col-6 col-sm">
           <span><currency v-bind:number="once"></currency></span>
         </div>
-        <div v-show="isMonthly" class="col-6 col-sm">
+        <div v-show="isMonthly && goal === 'RETIREMENT'" class="col-6 col-sm">
           <span><currency v-bind:number="monthly"></currency></span>
         </div>
-        <div class="col-6 col-sm">
-          <span>{{ payoffCost }}</span>
+        <div class="col-6 col-sm" v-show="goal === 'DEBT'">
+          <span>{{ payoffCost }} days</span>
         </div>
         <div class="col-1">
           <i class="fa fa-times-circle remove" aria-hidden="true" @click="removeItem"></i>
@@ -56,7 +56,7 @@ var _ = require('lodash/core')
 
 export default {
   name: 'item',
-  props: ['item'],
+  props: ['item', 'goal'],
   data () {
     return {
       editing: false,

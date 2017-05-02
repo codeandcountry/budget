@@ -16,7 +16,7 @@
     </div>
     <b-list-group>
       <transition-group name="item" tag="div">
-        <Item v-for="item in category.items" :item="item" v-bind:key="item"></Item>
+        <Item v-for="item in category.items" :item="item" :goal="goal" v-bind:key="item"></Item>
       </transition-group>
 
       <b-list-group-item>
@@ -54,7 +54,7 @@ var _ = require('lodash/core')
 
 export default {
   name: 'category',
-  props: ['category'],
+  props: ['category', 'goal'],
   data () {
     return {
       editing: false,
@@ -83,6 +83,7 @@ export default {
         }
       })
 
+      console.log(this)
       return remaining
     }
   },
